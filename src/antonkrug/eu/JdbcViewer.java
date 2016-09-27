@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +21,13 @@ import java.util.Map;
  */
 public class JdbcViewer extends JFrame implements ActionListener {
 
-  private static final long serialVersionUID = 1630825216656378020L;
-  
+  private static final long     serialVersionUID = 1630825216656378020L;
+  private static final boolean  SHOW_IMAGES      = true;
+  private static final int      LABELS_WIDTH     = 120; 
+  private static final int      LABELS_HEIGHT    = 220;
+  private static final int      FIELDS_WIDTH     = 250; 
+  private static final int      FIELDS_HEIGHT    = LABELS_HEIGHT;
+    
   private JLabel                countLabel;
   private JFrame                frame;
   private JPanel                fields;
@@ -71,50 +77,65 @@ public class JdbcViewer extends JFrame implements ActionListener {
     labels.add(new JLabel(Messages.getString("SALARY")));  //$NON-NLS-1$
     labels.add(new JLabel(Messages.getString("SEX")));     //$NON-NLS-1$
     labels.add(new JLabel(Messages.getString("DOB")));     //$NON-NLS-1$
-    minimizePanelToFit(labels);
-    labels.setBounds(10,10,20,20);
+    //minimizePanelToFit(labels);
+    //labels.setBounds(10,10,20,20);
+    labels.setPreferredSize(new Dimension(LABELS_WIDTH,LABELS_HEIGHT));
     
     //Populate fields
     fields = new JPanel(new GridLayout(6, 1));
     for (int i=0;i<6;i++) {
-      fields.add(new JTextField(""));
-      System.out.println(labels.getComponent(i).getPreferredSize());
+      JTextField field = new JTextField();
+      field.setEditable(false);
+      fields.add(field);
     }
+    fields.setPreferredSize(new Dimension(FIELDS_WIDTH, FIELDS_HEIGHT));
+    
 
     //Populate buttons    
-    JPanel buttons = new JPanel(new GridLayout(4, 1));
+    JPanel buttons = new JPanel(new GridLayout(5, 1));
     JPanel prevnext = new JPanel(new GridLayout(1,4));
 
-    countLabel = new JLabel("-/-", SwingConstants.CENTER);  //Counter label
+    countLabel = new JLabel("-", SwingConstants.CENTER);  //Counter label
     
     //add buttons and map a runnable to them
-    buttons.add(getButton("Delete",    this::actionDelete));
-    buttons.add(getButton("Add random",this::actionAdd));
+    buttons.add(new JLabel("Employee record: ", SwingConstants.CENTER));
     buttons.add(countLabel);
+    buttons.add(getButton("Delete",     this::actionDelete));
+    buttons.add(getButton("Add random", this::actionAdd));
     
-    prevnext.add(getButton("F",       this::actionFirst));
-    prevnext.add(getButton("P",        this::actionPrevious));
-    prevnext.add(getButton("N",        this::actionNext));
-    prevnext.add(getButton("L",       this::actionLast));
+    prevnext.add(getButton("First",     this::actionFirst));
+    prevnext.add(getButton("Previous",  this::actionPrevious));
+    prevnext.add(getButton("Next",      this::actionNext));
+    prevnext.add(getButton("Last",      this::actionLast));
     
-    buttons.add(prevnext);   
+    //buttons.add(prevnext);   
 
     //Layout the text labels, fields and buttons
     
-    JPanel bottomPanel = new JPanel(new GridLayout(1, 3));
+    JPanel bottomPanel = new JPanel(new FlowLayout());  
     bottomPanel.add(labels);
     bottomPanel.add(fields);
     bottomPanel.add(buttons);
+    bottomPanel.add(prevnext);
     
     
-    JPanel layout = new JPanel(new GridLayout(2, 1));
-    layout.add(new JLabel(new ImageIcon(getClass().getResource("/resources/logo.jpg"))));
-    layout.add(bottomPanel);
+    JPanel layout;
+    if (SHOW_IMAGES) {
+      layout = new JPanel(new GridLayout(2, 1));
+      layout.add(new JLabel(new ImageIcon(getClass().getResource("/resources/logo.jpg"))));
+    }
+    else {
+      layout = new JPanel(new GridLayout(1, 1));      
+    }
+    layout.add(bottomPanel);      
 
     //Auto - pack paddings and show window
+    
     frame.add(layout);
-    frame.setVisible(true);
     frame.pack();
+    frame.setResizable(false); // keep the window in fixed resolution
+    frame.setSize(new Dimension(650,600));
+    frame.setVisible(true);
   }
   
   
@@ -170,7 +191,16 @@ public class JdbcViewer extends JFrame implements ActionListener {
    */
   private JButton getButton(String label, Runnable actionPerformed) {
     Icon icon = new ImageIcon(getClass().getResource("/resources/icon_clock.png"));
-    JButton ret = new JButton(label,icon);
+    
+    JButton ret;
+    
+    if (SHOW_IMAGES) {
+      ret = new JButton(label,icon);
+    }
+    else {
+      ret = new JButton(label);
+    }
+    
     ret.addActionListener(this);
     actions.put(label, actionPerformed);
     return ret;
@@ -226,7 +256,7 @@ public class JdbcViewer extends JFrame implements ActionListener {
     setField(4, currentEmployee.getSex()    );
     setField(5, currentEmployee.getDob()    );
     
-    countLabel.setText(dao.getCurrentPossition()+"/"+dao.getSize());
+    countLabel.setText(dao.getCurrentPossition() +" of "+ dao.getSize());
   }
   
   
