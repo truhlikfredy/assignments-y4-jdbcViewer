@@ -6,8 +6,8 @@ import java.util.Properties;
 /**
  * JDBC implementation of DAO
  * 
- * @author Anton Krug
- * @date 26.9.2016
+ * @author  Anton Krug
+ * @date    26.9.2016
  * @version 1
  */
 public class DataAccessJdbc implements DataAccess {
@@ -21,6 +21,9 @@ public class DataAccessJdbc implements DataAccess {
   private boolean    resultError = false;
   
   
+  /**
+   * Will load the config.properties settings
+   */
   public DataAccessJdbc() {
     cfg = new Properties();
     try {
@@ -34,6 +37,9 @@ public class DataAccessJdbc implements DataAccess {
   }
 
 
+  /**
+   * Will connect to MySQL database with the credentials from config.properties
+   */
   @Override
   public Pair<Boolean, String> connect() {
 
@@ -66,7 +72,10 @@ public class DataAccessJdbc implements DataAccess {
     return new Pair<Boolean, String>(true, Messages.getString("DB_CONNECTED"));
   }
 
-
+  
+  /**
+   * Will fetch all employees with SQL query
+   */
   @Override
   public Pair<Boolean, String> getEmployees() {
 
@@ -79,7 +88,7 @@ public class DataAccessJdbc implements DataAccess {
     //the SQL query only if it's connected to DB
     try {
       Statement st = con.createStatement();
-      rs = st.executeQuery("select * from Employee where Ssn=1");
+      rs = st.executeQuery("select * from Employee");
 
     } catch (SQLException e) {
       if (DEBUG) e.printStackTrace();
@@ -92,6 +101,7 @@ public class DataAccessJdbc implements DataAccess {
     return new Pair<Boolean, String>(true, Messages.getString("SQL_OK"));
   }
 
+  
   /**
    * Will fetch employee from current possition
    */
@@ -207,6 +217,30 @@ public class DataAccessJdbc implements DataAccess {
       }
       
     }
+  }
+
+
+  @Override
+  public void firstEmployee() {
+    try {
+      resultError = rs.first();
+      
+    } catch (SQLException e) {
+      if (DEBUG) e.printStackTrace();
+      resultError = false;
+    }
+  }
+
+
+  @Override
+  public void lastEmployee() {
+    try {
+      resultError = rs.last();
+      
+    } catch (SQLException e) {
+      if (DEBUG) e.printStackTrace();
+      resultError = false;
+    }    
   }
 
   

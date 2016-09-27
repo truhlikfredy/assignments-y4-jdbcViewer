@@ -20,6 +20,10 @@ public interface DataAccess {
 	
 	public void previousEmployee();
 	
+	public void firstEmployee();
+	
+	public void lastEmployee();
+	
 	public void addEmployee();
 	
 	public void removeEmployee(Integer Ssn);
