@@ -100,13 +100,13 @@ public class JdbcViewer extends JFrame implements ActionListener {
     //add buttons and map a runnable to them
     buttons.add(new JLabel("Employee record: ", SwingConstants.CENTER));
     buttons.add(countLabel);
-    buttons.add(getButton("Delete",     this::actionDelete));
-    buttons.add(getButton("Add random", this::actionAdd));
+    buttons.add(getButton("Delete",     this::actionDelete,   "delete"));
+    buttons.add(getButton("Add random", this::actionAdd,      "add"));
     
-    prevnext.add(getButton("First",     this::actionFirst));
-    prevnext.add(getButton("Previous",  this::actionPrevious));
-    prevnext.add(getButton("Next",      this::actionNext));
-    prevnext.add(getButton("Last",      this::actionLast));
+    prevnext.add(getButton("First",     this::actionFirst,    "first"));
+    prevnext.add(getButton("Previous",  this::actionPrevious, "previous"));
+    prevnext.add(getButton("Next",      this::actionNext,     "next"));
+    prevnext.add(getButton("Last",      this::actionLast,     "last"));
     
     //buttons.add(prevnext);   
 
@@ -160,7 +160,7 @@ public class JdbcViewer extends JFrame implements ActionListener {
   
   
   private void actionFirst() {
-    dao.firstEmployee();
+//    dao.firstEmployee();
     populateEmployeeFields();    
   }
   
@@ -178,7 +178,7 @@ public class JdbcViewer extends JFrame implements ActionListener {
   
   
   private void actionLast() {
-    dao.lastEmployee();
+//    dao.lastEmployee();
     populateEmployeeFields();
   }
   
@@ -189,8 +189,8 @@ public class JdbcViewer extends JFrame implements ActionListener {
    * @param label
    * @return
    */
-  private JButton getButton(String label, Runnable actionPerformed) {
-    Icon icon = new ImageIcon(getClass().getResource("/resources/icon_clock.png"));
+  private JButton getButton(String label, Runnable actionPerformed, String iconName) {
+    Icon icon = new ImageIcon(getClass().getResource("/resources/icon_"+iconName+".png"));
     
     JButton ret;
     
