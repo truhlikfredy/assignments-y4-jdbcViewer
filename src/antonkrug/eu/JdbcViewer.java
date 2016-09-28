@@ -2,13 +2,9 @@ package antonkrug.eu;
 
 import java.awt.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,9 +18,15 @@ import java.util.Map;
 public class JdbcViewer extends JFrame implements ActionListener {
 
   private static final long     serialVersionUID = 1630825216656378020L;
+  
   private static final boolean  SHOW_IMAGES      = true;
+  
+  private static final int      APP_WIDTH        = 650; 
+  private static final int      APP_HEIGHT       = 600;
+
   private static final int      LABELS_WIDTH     = 120; 
   private static final int      LABELS_HEIGHT    = 220;
+  
   private static final int      FIELDS_WIDTH     = 250; 
   private static final int      FIELDS_HEIGHT    = LABELS_HEIGHT;
     
@@ -40,28 +42,7 @@ public class JdbcViewer extends JFrame implements ActionListener {
     connectToDb();
   }
   
-  
-  private void minimizePanelToFit(JPanel panel) {
-    
-    //find the biggest container from whole panel
-    int max = 0;
-    for (int i=0; i< panel.getComponents().length; i++) {
-      if (max < panel.getComponent(i).getPreferredSize().width) {
-        max = panel.getComponent(i).getPreferredSize().width;
-      }
-    }
-    
-    //and set it to whole panel
-    for (int i=0; i< panel.getComponents().length; i++) {
-//      panel.getComponent(i).setSize(max, panel.getComponent(i).getHeight());
-      panel.getComponent(i).setBounds(10, 10, max, 10);
-    }
-    
-    panel.setSize(max, panel.getHeight());
-  }
-
-
-  
+   
   /**
    * Will setup all the UI elements and layout
    */
@@ -134,7 +115,7 @@ public class JdbcViewer extends JFrame implements ActionListener {
     frame.add(layout);
     frame.pack();
     frame.setResizable(false); // keep the window in fixed resolution
-    frame.setSize(new Dimension(650,600));
+    frame.setSize(new Dimension(APP_WIDTH, APP_HEIGHT));
     frame.setVisible(true);
   }
   
@@ -160,7 +141,7 @@ public class JdbcViewer extends JFrame implements ActionListener {
   
   
   private void actionFirst() {
-//    dao.firstEmployee();
+    dao.firstEmployee();
     populateEmployeeFields();    
   }
   

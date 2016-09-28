@@ -3,6 +3,7 @@ package antonkrug.eu;
 import java.sql.*;
 import java.util.Properties;
 
+
 /**
  * JDBC implementation of DAO
  * 
@@ -13,12 +14,13 @@ import java.util.Properties;
 public class DataAccessJdbc implements DataAccess {
 
   // if set true will output on console more verbose information
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   private Connection con         = null;
   private ResultSet  rs          = null;
   private Properties cfg         = null;
   private boolean    resultError = false;
+//  private int        size        = 0;
   
   
   /**
@@ -31,9 +33,7 @@ public class DataAccessJdbc implements DataAccess {
       
     } catch (Exception e) {
       if (DEBUG) e.printStackTrace();
-    }
-    
-    System.out.println();
+    }    
   }
 
 
@@ -96,6 +96,7 @@ public class DataAccessJdbc implements DataAccess {
     }
     
     nextEmployee(); // jump to first employee
+//    size = getSize();
     
     if (DEBUG) System.out.println(Messages.getString("SQL_OK") + ": " + rs.toString());
     return new Pair<Boolean, String>(true, Messages.getString("SQL_OK"));
@@ -127,7 +128,7 @@ public class DataAccessJdbc implements DataAccess {
   public void nextEmployee() {
     try {
       if (!rs.next()) {
-        resultError = rs.first();
+        resultError = !rs.first();
       }
 
     } catch (SQLException e) {
@@ -145,18 +146,45 @@ public class DataAccessJdbc implements DataAccess {
   public void previousEmployee() {
     try {
       if (!rs.previous()) {
-        resultError = rs.last();
+        resultError = !rs.last();
       }
       
     } catch (SQLException e) {
       if (DEBUG) e.printStackTrace();
-      resultError = false;
+      resultError = true;
+    }
+  }
+
+  
+  @Override
+  public void firstEmployee() {
+    try {
+      resultError = !rs.first();
+      
+    } catch (SQLException e) {
+      if (DEBUG) e.printStackTrace();
+      resultError = true;
     }
   }
 
 
   @Override
+  public void lastEmployee() {
+    try {
+      resultError = !rs.last();
+      
+    } catch (SQLException e) {
+      if (DEBUG) e.printStackTrace();
+      resultError = true;
+    }    
+  }
+
+
+  @Override
   public void addEmployee() {
+    Employee employee = new Employee();
+    
+    employee.randomizeThisEmployee();
     // TODO Auto-generated method stub
 
   }
@@ -202,13 +230,10 @@ public class DataAccessJdbc implements DataAccess {
     else {
       
       try {
-        
         int originalPosition = rs.getRow(); //save original position
-        rs.last();
+        rs.last();                          //jump to last entry
         int lastPosition = rs.getRow();     //get position of the last entry
         rs.absolute(originalPosition);      //return cursor to original position before we started this measurement 
-        System.out.println(originalPosition);
-        
         return lastPosition;
         
       } catch (SQLException e) {
@@ -217,30 +242,6 @@ public class DataAccessJdbc implements DataAccess {
       }
       
     }
-  }
-
-
-  @Override
-  public void firstEmployee() {
-    try {
-      resultError = rs.first();
-      
-    } catch (SQLException e) {
-      if (DEBUG) e.printStackTrace();
-      resultError = false;
-    }
-  }
-
-
-  @Override
-  public void lastEmployee() {
-    try {
-      resultError = rs.last();
-      
-    } catch (SQLException e) {
-      if (DEBUG) e.printStackTrace();
-      resultError = false;
-    }    
   }
 
   

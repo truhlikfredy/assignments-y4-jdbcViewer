@@ -1,5 +1,7 @@
 package antonkrug.eu;
 
+import io.bloco.faker.Faker;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -78,6 +80,23 @@ public class Employee {
     this.sex     = Messages.getString("N/A");
     this.dob     = Messages.getString("N/A");
   }  
+
+  
+  /**
+   * Will populate employee fields with random values
+   */
+  public void randomizeThisEmployee() {
+    Faker faker = new Faker();
+    
+    Employee employee = new Employee();
+    employee.setAdress( faker.address.streetAddress() );
+    employee.setDob(    faker.date.birthday(18,60)    );
+    employee.setName(   faker.name.name()             );
+    employee.setSalary( 190+(int)(Math.random() * 750));  //give it salary between 190 and 940
+    employee.setSex(    Math.random()                 );  //randomly distribute genders
+
+    System.out.println(employee);    
+  }
   
   
   public Integer getSsn() {
@@ -144,6 +163,11 @@ public class Employee {
     }
   }
 
+  
+  public void setSex(double sex) {
+    setSex((sex>0.5)?"M":"F");
+  }
+  
 
   public String getDob() {
     return dob;
@@ -161,9 +185,18 @@ public class Employee {
    * @param date
    */
   public void setDob(Date date) {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-    this.dob = sdf.format(new Date());
+//    SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+//    this.dob = sdf.format(date);
+    this.dob = date.toString();
   }
 
+
+  @Override
+  public String toString() {
+    return "Employee [ssn=" + ssn + ", name=" + name + ", address=" + address + ", salary="
+        + salary + ", sex=" + sex + ", dob=" + dob + "]";
+  }
+
+  
   
 }
