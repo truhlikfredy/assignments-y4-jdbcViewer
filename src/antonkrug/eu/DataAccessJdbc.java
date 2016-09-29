@@ -189,19 +189,24 @@ public class DataAccessJdbc implements DataAccess {
   private Pair<Boolean,String> saveEmployee(Employee employee) {
     System.out.println(employee.toString());
     
-    java.sql.Date sqlDate = new java.sql.Date(employee.getDobDate().getTime()); //convert util.Date to sql.Date
+  //convert util.Date to sql.Date
+    java.sql.Date sqlDate = new java.sql.Date(employee.getDobDate().getTime()); 
     
     PreparedStatement s;
     int count;
     try {
-      s = con.prepareStatement ("INSERT INTO Employee (Bdate, Name, Address, Salary, Sex, Works_For) VALUES(?,?,?,?,?,?)");
+      s = con.prepareStatement ("INSERT INTO Employee "+
+                                "(Bdate, Name, Address, Salary, Sex, Works_For) "+
+                                "VALUES(?,?,?,?,?,?)");
       
       s.setDate(1,   sqlDate              );
       s.setString(2, employee.getName()   );
       s.setString(3, employee.getAddress());
       s.setInt(4,    employee.getSalary() );
       s.setString(5, employee.getSex()    );
-      s.setInt(6,    1                    );  //populating Works_For with bogus number, because it can't be null
+  
+      //populating Works_For with any number, because it can't be null
+      s.setInt(6,    1                    );  
       
       count = s.executeUpdate ();
       System.out.println(s);
@@ -212,8 +217,9 @@ public class DataAccessJdbc implements DataAccess {
       return new Pair<Boolean, String>(false, Messages.getString("ERROR_SQL"+ e.toString()));
     }
 
-    if (DEBUG) System.out.println(count + Messages.getString("ROWS_AFFECTED"));
-    return new Pair<Boolean, String>(true, count + Messages.getString("ROWS_AFFECTED"));
+    final String msg = count + " " + Messages.getString("ROWS_AFFECTED") + " " + employee.toStringLite();
+    if (DEBUG) System.out.println(msg);
+    return new Pair<Boolean, String>(true, msg);
   }
 
 

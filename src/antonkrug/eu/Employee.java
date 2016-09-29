@@ -206,5 +206,10 @@ public class Employee {
   }
 
   
+  public String toStringLite() {
+    return "Employee " + name + ", address=" + address + ", salary="
+        + salary + ", sex=" + sex + ", dob=" + getDobString() + ".";
+  }
+  
   
 }

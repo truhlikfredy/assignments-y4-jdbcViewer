@@ -6,37 +6,49 @@ package antonkrug.eu;
  * 
  * @author  Anton Krug
  * @date    26.9.2016
- * @version 1
+ * @version 2
  */
 public class Pair<F, S> {
 
   private final F first;
   private final S second;
 
-  public Pair(F left, S right) {
-    this.first = left;
-    this.second = right;
+
+  public Pair(F first, S second) {
+    this.first = first;
+    this.second = second;
   }
 
-  public F getLeft() {
+
+  public F getFirst() {
     return first;
   }
 
-  public S getRight() {
+
+  public S getSecond() {
     return second;
   }
+
 
   @Override
   public int hashCode() {
     return first.hashCode() ^ second.hashCode();
   }
 
+
   @SuppressWarnings("rawtypes")
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof Pair)) return false;
     Pair pairo = (Pair) o;
-    return this.first.equals(pairo.getLeft()) && this.second.equals(pairo.getRight());
+    return this.first.equals(pairo.getFirst()) && this.second.equals(pairo.getSecond());
   }
+
+
+  @Override
+  public String toString() {
+    return "Pair [first=" + first + ", second=" + second + "]";
+  }
+  
 
 }

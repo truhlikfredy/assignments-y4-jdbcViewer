@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -24,8 +25,8 @@ import com.mysql.fabric.xmlrpc.base.Array;
 /**
  * 650x180
  * 
- * @author Anton Krug
- * @date 26.9.2016
+ * @author  Anton Krug
+ * @date    26.9.2016
  * @version 1
  */
 public class JdbcViewerGui extends JFrame implements ActionListener {
@@ -68,7 +69,10 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
    * Will add employee, read all employees back and display last one
    */
   private void actionAdd() {
-    dao.addEmployee();
+    Pair<Boolean, String> status = dao.addEmployee();
+    
+    JOptionPane.showMessageDialog(frame, status.getSecond());
+    
     dao.getEmployees();
     actionLast();
   }
