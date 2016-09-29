@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="libs/faker-1.2.4-1.2.4.jar"/>
 	<classpathentry kind="lib" path="libs/snakeyaml-1.17.jar"/>
 	<classpathentry kind="lib" path="libs/joda-time-2.9.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
