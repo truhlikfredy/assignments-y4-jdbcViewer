@@ -1,8 +1,12 @@
-JDBC Employee database Viewer - CA 1
+JDBC Employee Database Viewer - CA 1
 ========================
  by Anton Krug 20062210
 
-**Features:**
+
+![screenshot](https://raw.githubusercontent.com/truhlikfredy/assignments-y4-jdbcViewer/master/images/app.jpg?token=ABC5iVnzhQtKyOekSlVzQUpt-I9ftVo7ks5X9nw6wA%3D%3D)
+
+Features
+--------
 
 * Proper use of Java8
  
@@ -27,14 +31,37 @@ Because the dao is DataAccess we don't care with which specific implementation w
 
 * Handcrafted GUI, avoided WindowBuilder tool on purpose, because for this type of simple GUI a WindowBuilder is overkill tool and polutes project with a lot of garbage and generated code, which can't be touched or refactored without breaking things. By hand tailoring the GUI the source code is smaller, cleaner and free to refactoring and future changes.
 
-* Using libary [faker](https://github.com/blocoio/faker), to generate fake employees.
+* Using libary [faker](https://github.com/blocoio/faker), to generate fake employees. This requires couple other libaries to be included as well, but on other hand allows nicer expierence and better JUnit tests. Allows to generate as many as liked fake entries (no need to populate them manualy or using third parties websites)
 
-<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>C</kbd>:
+* Proper use of the resultSet iterating (no counters), using **first**, **next**, **last**, **previous** as it was meant to be used.
 
-code metrics
+Schema
+------
 
-test coverage
+The project follows the schema from the picture in the specs, but there are few things like AUTO_INCREMENT which can't be read from the schema pictures and the behaviour (working / broken) can depend on it a lot. There fore there is included **createSchema.sql** file in case it is needed. And there are JUnit tests which create the database from scratch with each test to make sure the same testing conditions are meet.
 
-  heading
-  ===================
+
+Documentation
+-------------
+
+Javadoc (only showing documentation for public methods) generated under the **doc/index.html**. There is bit more comments in the git repository as well which will be located under [github repository](https://github.com/truhlikfredy/assignments-y4-jdbcViewer) when it will be made public (till then it will show 404).
+
+Metrics
+-------
+
+Did static code analysis and was changing the code depending on the results. Got the cyclomatic complexity average to very low values. This should resort to very few possible bugs. And because this means very low branching it allows to simpler tests. When there are only 1 or 2 branches, then it's easier to cover fully in the tests all conditions and branches. Low complexity is thanks to **java8** as well where in the GUI I could simplify the eventListeners. And low number of lines of code is thanks to hand coding GUI instead of using generators.
+
+Metric                           | Total  | Mean  | Std. Dev.  
+:--------------------------------| ------:| -----:| ----------:
+Cyclomatic Complexity            |        |   1.6 |        1.2
+Nested Block Depth               |        |   1.1 |        0.7
+Packages                         |      2 |       |            
+Classes                          |      7 |       |            
+Methods                          |     73 |       |            
+Lines of code (without comments) |    694 |       |   
+
+
+Testing
+-------
+Was done with JUnit tests and together with manual GUI testing on Debian Linux and Windows 7. Separating the DAO from the UI allowed simpler and better testing than without the separation.
   
