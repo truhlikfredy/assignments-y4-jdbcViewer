@@ -200,8 +200,8 @@ public class DataAccessJdbc implements DataAccess {
     int count;
     try {
       s = con.prepareStatement ("INSERT INTO Employee "+
-                                "(Bdate, Name, Address, Salary, Sex, Works_For) "+
-                                "VALUES(?,?,?,?,?,?)");
+                                "(Bdate, Name, Address, Salary, Sex, Works_For, Manages, Supervises) "+
+                                "VALUES(?,?,?,?,?,?,?,?)");
       
       s.setDate(1,   sqlDate              );
       s.setString(2, employee.getName()   );
@@ -209,8 +209,10 @@ public class DataAccessJdbc implements DataAccess {
       s.setInt(4,    employee.getSalary() );
       s.setString(5, employee.getSex()    );
   
-      //populating Works_For with any number, because it can't be null
+      //populating Works_For, Manages, Supervises with fake numbers
       s.setInt(6,    1                    );  
+      s.setInt(7,    2                    );  
+      s.setInt(8,    3                    );  
       
       count = s.executeUpdate ();
       if (DEBUG) System.out.println(s);
