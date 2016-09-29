@@ -267,15 +267,15 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     countLabel = new JLabel("-", SwingConstants.CENTER);  //Counter label
     
     //add buttons and map a runnable to them
-    buttons.add(new JLabel("Employee record: ", SwingConstants.CENTER));
+    buttons.add(new JLabel(Messages.getString("EMPLOYEE_COUNT"), SwingConstants.CENTER));
     buttons.add(countLabel);
-    buttons.add(getButton("Delete",     this::actionDelete,   "delete"));
-    buttons.add(getButton("Add random", this::actionAdd,      "add"));
+    buttons.add(getButton(Messages.getString("DELETE"),     this::actionDelete,   "delete"));
+    buttons.add(getButton(Messages.getString("ADD_RANDOM"), this::actionAdd,      "add"));
     
-    prevnext.add(getButton("First",     this::actionFirst,    "first"));
-    prevnext.add(getButton("Previous",  this::actionPrevious, "previous"));
-    prevnext.add(getButton("Next",      this::actionNext,     "next"));
-    prevnext.add(getButton("Last",      this::actionLast,     "last"));
+    prevnext.add(getButton(Messages.getString("FIRST"),     this::actionFirst,    "first"));
+    prevnext.add(getButton(Messages.getString("PREVIOUS"),  this::actionPrevious, "previous"));
+    prevnext.add(getButton(Messages.getString("NEXT"),      this::actionNext,     "next"));
+    prevnext.add(getButton(Messages.getString("LAST"),      this::actionLast,     "last"));
     
     //buttons.add(prevnext);   
 
