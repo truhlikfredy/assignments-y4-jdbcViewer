@@ -14,13 +14,12 @@ import java.util.Properties;
 public class DataAccessJdbc implements DataAccess {
 
   // if set true will output on console more verbose information
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   private Connection con         = null;
   private ResultSet  rs          = null;
   private Properties cfg         = null;
   private boolean    resultError = false;
-//  private int        size        = 0;
   
   
   /**
@@ -96,7 +95,6 @@ public class DataAccessJdbc implements DataAccess {
     }
     
     nextEmployee(); // jump to first employee
-//    size = getSize();
     
     if (DEBUG) System.out.println(Messages.getString("SQL_OK") + ": " + rs.toString());
     return new Pair<Boolean, String>(true, Messages.getString("SQL_OK"));
@@ -156,6 +154,9 @@ public class DataAccessJdbc implements DataAccess {
   }
 
   
+  /**
+   * Jump at first employee or setup a error state
+   */
   @Override
   public void firstEmployee() {
     try {
@@ -168,6 +169,9 @@ public class DataAccessJdbc implements DataAccess {
   }
 
 
+  /**
+   * Jump at last employee or setup a error state
+   */
   @Override
   public void lastEmployee() {
     try {
@@ -209,7 +213,7 @@ public class DataAccessJdbc implements DataAccess {
       s.setInt(6,    1                    );  
       
       count = s.executeUpdate ();
-      System.out.println(s);
+      if (DEBUG) System.out.println(s);
       s.close ();
       
     } catch (SQLException e) {
@@ -223,6 +227,9 @@ public class DataAccessJdbc implements DataAccess {
   }
 
 
+  /**
+   * Add one randomised employee to database
+   */
   @Override
   public Pair<Boolean,String> addEmployee() {
     
@@ -230,9 +237,29 @@ public class DataAccessJdbc implements DataAccess {
   }
 
 
+  /**
+   * Delete employee with the Ssn ID
+   */
   @Override
-  public void removeEmployee(Integer Ssn) {
-    // TODO Auto-generated method stub
+  public Pair<Boolean,String> removeEmployee(Integer Ssn) {
+    PreparedStatement s;
+    int count;
+    try {
+      s = con.prepareStatement ("DELETE FROM Employee WHERE Ssn = ?");
+      s.setInt(1, Ssn);
+      
+      count = s.executeUpdate ();
+      if (DEBUG) System.out.println(s);
+      s.close ();
+      
+    } catch (SQLException e) {
+      if (DEBUG) e.printStackTrace();
+      return new Pair<Boolean, String>(false, Messages.getString("ERROR_SQL"+ e.toString()));
+    }
+
+    final String msg = count + " " + Messages.getString("ROWS_AFFECTED");
+    if (DEBUG) System.out.println(msg);
+    return new Pair<Boolean, String>(true, msg);
 
   }
 

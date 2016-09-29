@@ -14,17 +14,31 @@ public class Pair<F, S> {
   private final S second;
 
 
+  /**
+   * Constructor populating both fields
+   * 
+   * @param first
+   * @param second
+   */
   public Pair(F first, S second) {
     this.first = first;
     this.second = second;
   }
 
 
+  /**
+   * Returns first field
+   * @return
+   */
   public F getFirst() {
     return first;
   }
 
 
+  /**
+   * Returns second field
+   * @return
+   */
   public S getSecond() {
     return second;
   }

@@ -1,7 +1,7 @@
 package antonkrug.eu;
 
 /**
- * Common interface for all databases implementations
+ * Common interface for all persistent storage implementations
  * 
  * @author   Anton Krug
  * @date     26.9.2016
@@ -30,7 +30,7 @@ public interface DataAccess {
 	
 	public void previousEmployee();
 	
-	public void removeEmployee(Integer Ssn);
+	public Pair<Boolean,String> removeEmployee(Integer Ssn);
 	
 
 }

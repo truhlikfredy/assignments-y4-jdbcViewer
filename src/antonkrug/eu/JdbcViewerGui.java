@@ -20,10 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.mysql.fabric.xmlrpc.base.Array;
-
 /**
- * 650x180
+ * The main UI and the app which is orchestrating all other classes and methods. 
+ * Contains the main method and the main JFrame app. 
+ * For more details read the README.md file
  * 
  * @author  Anton Krug
  * @date    26.9.2016
@@ -52,13 +52,17 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
   
   
   private JLabel                countLabel;
+  private JPanel                buttons;
   private JFrame                frame;
   private JPanel                fields;
   private JPanel                prevnext;
-  private DataAccessJdbc        dao;
+  private DataAccess            dao;
   private Map<String, Runnable> actions;
   
    
+  /**
+   * Constructor will setup UI layout and DB connection.
+   */
   public JdbcViewerGui() {
     setupUi();
     connectToDb();
@@ -82,24 +86,31 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
    * Will delete employee, read all employees back and display first one
    */
   private void actionDelete() {
-    dao.addEmployee();
+    dao.removeEmployee(dao.getCurrentEmployee().getSsn());
     dao.getEmployees();
     actionFirst();
   }
   
-  
+  /**
+   * Event handler for "First" button
+   */
   private void actionFirst() {
     dao.firstEmployee();
     populateEmployeeFields();    
   }
   
   
+  /**
+   * Event handler for "Last" button
+   */
   private void actionLast() {
     dao.lastEmployee();
     populateEmployeeFields();
   }
   
-  
+  /**
+   * Event handler for "Next" button
+   */
   private void actionNext() {
     dao.nextEmployee();
     populateEmployeeFields();
@@ -116,7 +127,9 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     if (actions.containsKey(action)) actions.get(action).run();
   }
   
-  
+  /**
+   * Event handler for "Previous" button
+   */
   private void actionPrevious() {
     dao.previousEmployee();
     populateEmployeeFields();        
@@ -124,7 +137,7 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
 
 
   /**
-   * Will connect to database
+   * Connect to JDBC database
    */
   private void connectToDb() {
     dao = new DataAccessJdbc();
@@ -164,12 +177,16 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
    * Disables or enables Next/Prev buttons, use when then there are no employees to iterate
    */
   private void buttonsAreEnabled(boolean areEnabled) {
+    //change the first, prev, next and last buttons
     Arrays.asList(prevnext.getComponents()).stream().forEach((item)->item.setEnabled(areEnabled));
+    
+    //do same with delete button
+    buttons.getComponent(2).setEnabled(areEnabled);
   }
   
   
   /**
-   * Will fetch employee from current position and populate all the fields in the UI
+   * Fetch employee from current position and populate all the fields in the UI
    */
   private void populateEmployeeFields() {
     Employee currentEmployee = dao.getCurrentEmployee();
@@ -244,7 +261,7 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     
 
     //Populate buttons    
-    JPanel buttons = new JPanel(new GridLayout(5, 1));
+    buttons = new JPanel(new GridLayout(5, 1));
     prevnext = new JPanel(new GridLayout(1,4));
 
     countLabel = new JLabel("-", SwingConstants.CENTER);  //Counter label

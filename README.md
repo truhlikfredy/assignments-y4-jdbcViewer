@@ -13,10 +13,14 @@ JDBC Employee database Viewer - CA 1
     `this::actionAddEmployee()`
     This syntax is very trivial and yet very powerful (removes lot of sugar). This allows very simplistic eventListener and lowers cyclomatic complexity (more below).
 
-* Modularity, using Interface xxxxxxxxxxxxxxxxxxxxxxx finish
-    
-* Separation of concenrs, all the database configuration is removed from code and kept in separate **config.properties** file.
+* Separation of concerns, all the database configuration is removed from code and kept in separate **config.properties** file.
 
+* Separation of concerns and Modularity, using Interface to separate the database access implementations from concept. AddEmployee in the UI should be independ of the specific implementation of the database. Or given database access implementation shouldn't dependant on specific GUI. All UIs implementation and DAOs depend on 1 interface and 1 class, Employee which is entity containting the values and the DataAccess interface which is used to describle the interface for the implementations. This allows for the UI have many different DAOs implementations and no need to changed anything in the UI. And it's the same other direction as well, the specific DAO can be used in many different UIs. This allows to have console based UI, or just better JUnit tests. And it allows to swap implementations in runtime if needed:
+`DataAccess dao = new DataAccessJdbc();`
+Because the dao is DataAccess we don't care with which specific implementation we initialised it at the moment, in the example it was Jdbc but for the UI there wouldn't any difference if there would be different implementation. In the diagram below it's show how the interface is used:
+![uml diagram of the interface](https://raw.githubusercontent.com/truhlikfredy/assignments-y4-jdbcViewer/master/images/uml.png?token=ABC5if-GPFhyJOJ-UsvbRhHRwsFTlCK3ks5X9l2bwA%3D%3D)
+
+    
 * Externalized Strings, all texts which comunicate with enduser are exported into **messagess.properties** allows faster proof reading, or easy multilangual support.
 
 * Embedded resources, icons and graphics are embedded into jar as internal resources (only 1 jar needed to redistribute).

@@ -28,8 +28,6 @@ public class Employee {
 	private String  sex;
 	private Date    dob;
 	
-
-	
 	
 	/**
 	 * Will populate employee with the strings given
@@ -109,36 +107,64 @@ public class Employee {
   }
   
   
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public Integer getSsn() {
     return ssn;
   }
 
 
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public void setSsn(Integer ssn) {
     this.ssn = ssn;
   }
 
 
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public String getName() {
     return name;
   }
 
 
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public void setName(String name) {
     this.name = name;
   }
 
 
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public String getAddress() {
     return address;
   }
 
 
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public void setAdress(String address) {
     this.address = address;
   }
 
 
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public Integer getSalary() {
     return salary;
   }
@@ -156,6 +182,10 @@ public class Employee {
   }
 
 
+  /**
+   * Returned gender should be M or F
+   * @return
+   */
   public String getSex() {
     return sex.toUpperCase();
   }
@@ -174,19 +204,31 @@ public class Employee {
   }
 
   
+  /**
+   * Set gender based from floating point (good with randomizers)
+   * @return
+   */  
   public void setSex(double sex) {
     setSex((sex>0.5)?"M":"F");
   }
   
-
+  
+  /**
+   * Formated birthday
+   * @return
+   */
   public String getDobString() {
     return sdf.format(dob);
   }
 
+  
+  /**
+   * These are generic getters and setters for the fields
+   * @return
+   */
   public Date getDobDate() {
     return dob;
   }
-
  
   
   /**
@@ -199,6 +241,10 @@ public class Employee {
   }
 
 
+  /**
+   * Full toString each field
+   * @return
+   */
   @Override
   public String toString() {
     return "Employee [ssn=" + ssn + ", name=" + name + ", address=" + address + ", salary="
@@ -206,6 +252,10 @@ public class Employee {
   }
 
   
+  /**
+   * Shorter toString which returns more human readable strings and less fields.
+   * @return
+   */
   public String toStringLite() {
     return "Employee " + name + ", address=" + address + ", salary="
         + salary + ", sex=" + sex + ", dob=" + getDobString() + ".";
