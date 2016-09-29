@@ -10,27 +10,27 @@ package antonkrug.eu;
 
 public interface DataAccess {
 	
+	public Pair<Boolean,String> addEmployee();
+	
 	public Pair<Boolean,String> connect();
+	
+	public void firstEmployee();
+	
+	public Employee getCurrentEmployee();
+	
+	public Integer getCurrentPossition();
 	
 	public Pair<Boolean, String> getEmployees();
 	
-	public Employee getCurrentEmployee();
+	public Integer getSize();
+	
+	public void lastEmployee();
 	
 	public void nextEmployee();
 	
 	public void previousEmployee();
 	
-	public void firstEmployee();
-	
-	public void lastEmployee();
-	
-	public void addEmployee();
-	
 	public void removeEmployee(Integer Ssn);
-	
-	public Integer getCurrentPossition();
-	
-	public Integer getSize();
 	
 
 }

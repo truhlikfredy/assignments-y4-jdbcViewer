@@ -5,6 +5,8 @@ import io.bloco.faker.Faker;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 /**
@@ -16,13 +18,17 @@ import java.util.Date;
  *
  */
 public class Employee {
-	
+
+  private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+  
 	private Integer ssn;
 	private String  name;
 	private String  address;
 	private Integer salary;
 	private String  sex;
-	private String  dob;
+	private Date    dob;
+	
+
 	
 	
 	/**
@@ -36,7 +42,7 @@ public class Employee {
 	 * @param dob
 	 */
   public Employee(Integer ssn, String name, String address, Integer salary, String sex,
-      String dob) {
+      Date dob) {
 
     this.ssn     = ssn;
     this.name    = name;
@@ -78,24 +84,28 @@ public class Employee {
     this.address = Messages.getString("N/A");
     this.salary  = 0;
     this.sex     = Messages.getString("N/A");
-    this.dob     = Messages.getString("N/A");
+    this.dob     = new Date();
   }  
 
   
   /**
    * Will populate employee fields with random values
    */
-  public void randomizeThisEmployee() {
+  public static Employee getRandomizedEmployee() {
     Faker faker = new Faker();
-    
+
+    LocalDate bod = LocalDate.of(1946+(int)(Math.random()*52), // age 18-70 years old 
+        1+(int)(Math.random()*11),    // any month 1-12
+        1+(int)(Math.random()*27));   // only in safe days 1-28
+       
     Employee employee = new Employee();
     employee.setAdress( faker.address.streetAddress() );
-    employee.setDob(    faker.date.birthday(18,60)    );
+    employee.setDob(    Date.from(bod.atStartOfDay(ZoneId.systemDefault()).toInstant())); //age 18-70
     employee.setName(   faker.name.name()             );
     employee.setSalary( 190+(int)(Math.random() * 750));  //give it salary between 190 and 940
     employee.setSex(    Math.random()                 );  //randomly distribute genders
-
-    System.out.println(employee);    
+    
+    return employee;
   }
   
   
@@ -169,15 +179,15 @@ public class Employee {
   }
   
 
-  public String getDob() {
+  public String getDobString() {
+    return sdf.format(dob);
+  }
+
+  public Date getDobDate() {
     return dob;
   }
 
-
-  public void setDob(String dob) {    
-    this.dob = dob;
-  }
-  
+ 
   
   /**
    * Will format date object into a string
@@ -185,9 +195,7 @@ public class Employee {
    * @param date
    */
   public void setDob(Date date) {
-//    SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-//    this.dob = sdf.format(date);
-    this.dob = date.toString();
+    this.dob = date;
   }
 
 

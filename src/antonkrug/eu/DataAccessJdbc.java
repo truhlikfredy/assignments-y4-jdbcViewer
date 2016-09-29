@@ -14,7 +14,7 @@ import java.util.Properties;
 public class DataAccessJdbc implements DataAccess {
 
   // if set true will output on console more verbose information
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
   private Connection con         = null;
   private ResultSet  rs          = null;
@@ -178,15 +178,49 @@ public class DataAccessJdbc implements DataAccess {
       resultError = true;
     }    
   }
+  
+  
+  /**
+   * Will create SQL query from given employee and save it to the database.
+   * 
+   * @param employee
+   * @return
+   */
+  private Pair<Boolean,String> saveEmployee(Employee employee) {
+    System.out.println(employee.toString());
+    
+    java.sql.Date sqlDate = new java.sql.Date(employee.getDobDate().getTime()); //convert util.Date to sql.Date
+    
+    PreparedStatement s;
+    int count;
+    try {
+      s = con.prepareStatement ("INSERT INTO Employee (Bdate, Name, Address, Salary, Sex, Works_For) VALUES(?,?,?,?,?,?)");
+      
+      s.setDate(1,   sqlDate              );
+      s.setString(2, employee.getName()   );
+      s.setString(3, employee.getAddress());
+      s.setInt(4,    employee.getSalary() );
+      s.setString(5, employee.getSex()    );
+      s.setInt(6,    1                    );  //populating Works_For with bogus number, because it can't be null
+      
+      count = s.executeUpdate ();
+      System.out.println(s);
+      s.close ();
+      
+    } catch (SQLException e) {
+      if (DEBUG) e.printStackTrace();
+      return new Pair<Boolean, String>(false, Messages.getString("ERROR_SQL"+ e.toString()));
+    }
+
+    if (DEBUG) System.out.println(count + Messages.getString("ROWS_AFFECTED"));
+    return new Pair<Boolean, String>(true, count + Messages.getString("ROWS_AFFECTED"));
+  }
 
 
   @Override
-  public void addEmployee() {
-    Employee employee = new Employee();
+  public Pair<Boolean,String> addEmployee() {
     
-    employee.randomizeThisEmployee();
-    // TODO Auto-generated method stub
-
+    return saveEmployee(Employee.getRandomizedEmployee());
   }
 
 
