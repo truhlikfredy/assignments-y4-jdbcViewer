@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +50,7 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
   public static void main(String[] args) {
     JdbcViewerGui app = new JdbcViewerGui();
     app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //System.exit(0);
   }
   
   
@@ -245,6 +248,8 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
   private void setupUi() {
     frame = new JFrame();
     actions = new HashMap<>();
+    
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     //Populate text labels
     JPanel labels = new JPanel(new GridLayout(6, 1));
@@ -313,6 +318,14 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     frame.setResizable(false); // keep the window in fixed resolution
     frame.setSize(new Dimension(APP_WIDTH, APP_HEIGHT));
     frame.setVisible(true);
+    
+    //shutdown everything after closing the window
+    frame.addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e) {
+        System.exit(0);
+      }
+    });
+    
   }
 
   
