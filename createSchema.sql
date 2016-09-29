@@ -52,8 +52,7 @@ CREATE TABLE IF NOT EXISTS `Project` (
   `Location` varchar(50) DEFAULT NULL,
   `Controlled_By` int(11) DEFAULT NULL,
   PRIMARY KEY (`Name`,`Number`),
-  KEY `FK_Project_Department` (`Controlled_By`),
-  CONSTRAINT `FK_Project_Department` FOREIGN KEY (`Controlled_By`) REFERENCES `Department` (`Number`)
+  KEY `FK_Project_Department` (`Controlled_By`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
