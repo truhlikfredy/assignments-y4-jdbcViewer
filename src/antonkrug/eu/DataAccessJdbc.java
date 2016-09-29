@@ -218,7 +218,7 @@ public class DataAccessJdbc implements DataAccess {
       
     } catch (SQLException e) {
       if (DEBUG) e.printStackTrace();
-      return new Pair<Boolean, String>(false, Messages.getString("ERROR_SQL"+ e.toString()));
+      return new Pair<Boolean, String>(false, Messages.getString("ERROR_SQL") + e.toString());
     }
 
     final String msg = count + " " + Messages.getString("ROWS_AFFECTED") + " " + employee.toStringLite();

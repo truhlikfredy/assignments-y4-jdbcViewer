@@ -84,6 +84,48 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     actionLast();
   }
   
+  /**
+   * Creates new employee object from populated fields
+   * 
+   * @return
+   */
+  private Employee getEmployeeFromFields() {
+    Employee ret = new Employee();
+    
+    try {
+      ret.setSsn(      Integer.parseInt(getField(0)));
+      ret.setName(     getField(1)                  );
+      ret.setAddress(  getField(2)                  );
+      ret.setSalary(   Integer.parseInt(getField(3)));
+      ret.setSex(      getField(4)                  );  
+      
+      //test if the date was parsed correctly
+      if (!ret.setDob(getField(5))) {
+        throw new Exception("Wrong date format");
+      }
+      
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(frame, Messages.getString("ERROR_FORM") + "\n"+ e.toString());
+    }
+    
+    return ret;
+  }
+
+  
+  /**
+   * Will add employee, read all employees back and display last one
+   */
+  private void actionAddNew() {
+    Employee employee = getEmployeeFromFields(); 
+    
+    Pair<Boolean, String> status = dao.addEmployee(employee);
+    
+    JOptionPane.showMessageDialog(frame, status.getSecond());
+    
+    dao.getEmployees();
+    actionLast();
+  }
+
   
   /**
    * Will delete employee, read all employees back and display first one
@@ -243,6 +285,18 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
 
 
   /**
+   * Get back one field
+   * 
+   * @param possition
+   */
+  private String getField(int possition) {
+    Component  item = fields.getComponent(possition);
+    JTextField text = (JTextField) item;
+    return text.getText();    
+  }
+  
+  
+  /**
    * Will setup all the UI elements and layout
    */
   private void setupUi() {
@@ -267,7 +321,7 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     fields = new JPanel(new GridLayout(6, 1));
     for (int i=0;i<6;i++) {
       JTextField field = new JTextField();
-      field.setEditable(false);
+      if (i==0) field.setEditable(false);
       fields.add(field);
     }
     fields.setPreferredSize(new Dimension(FIELDS_WIDTH, FIELDS_HEIGHT));
@@ -282,13 +336,14 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     //add buttons and map a runnable to them
     buttons.add(new JLabel(Messages.getString("EMPLOYEE_COUNT"), SwingConstants.CENTER));
     buttons.add(countLabel);
-    buttons.add(getButton(Messages.getString("DELETE"),     this::actionDelete,   "delete"));
-    buttons.add(getButton(Messages.getString("ADD_RANDOM"), this::actionAdd,      "add"));
+    buttons.add(getButton(Messages.getString("DELETE"),      this::actionDelete,   "delete"));
+    buttons.add(getButton(Messages.getString("ADD_RANDOM"),  this::actionAdd,      "add"));
+    buttons.add(getButton(Messages.getString("ADD_CURRENT"), this::actionAddNew,   "add"));
     
-    prevnext.add(getButton(Messages.getString("FIRST"),     this::actionFirst,    "first"));
-    prevnext.add(getButton(Messages.getString("PREVIOUS"),  this::actionPrevious, "previous"));
-    prevnext.add(getButton(Messages.getString("NEXT"),      this::actionNext,     "next"));
-    prevnext.add(getButton(Messages.getString("LAST"),      this::actionLast,     "last"));
+    prevnext.add(getButton(Messages.getString("FIRST"),      this::actionFirst,    "first"));
+    prevnext.add(getButton(Messages.getString("PREVIOUS"),   this::actionPrevious, "previous"));
+    prevnext.add(getButton(Messages.getString("NEXT"),       this::actionNext,     "next"));
+    prevnext.add(getButton(Messages.getString("LAST"),       this::actionLast,     "last"));
     
     //buttons.add(prevnext);   
 

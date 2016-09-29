@@ -4,6 +4,7 @@ import io.bloco.faker.Faker;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -97,7 +98,7 @@ public class Employee {
         1+(int)(Math.random()*27));   // only in safe days 1-28
        
     Employee employee = new Employee();
-    employee.setAdress( faker.address.streetAddress() );
+    employee.setAddress( faker.address.streetAddress() );
     employee.setDob(    Date.from(bod.atStartOfDay(ZoneId.systemDefault()).toInstant())); //age 18-70
     employee.setName(   faker.name.name()             );
     employee.setSalary( 190+(int)(Math.random() * 750));  //give it salary between 190 and 940
@@ -156,7 +157,7 @@ public class Employee {
    * These are generic getters and setters for the fields
    * @return
    */
-  public void setAdress(String address) {
+  public void setAddress(String address) {
     this.address = address;
   }
 
@@ -232,7 +233,7 @@ public class Employee {
  
   
   /**
-   * Will format date object into a string
+   * Will format date object into regular date
    * 
    * @param date
    */
@@ -240,6 +241,21 @@ public class Employee {
     this.dob = date;
   }
 
+  
+  /**
+   * Will parse string into date object
+   * 
+   * @param date
+   */
+  public boolean setDob(String date) {
+    try {
+      this.dob = sdf.parse(date);
+    } catch (ParseException e) {
+      //if wrong date format was given, keep the original state of the variable
+      return false;
+    }
+    return true;
+  }
 
   /**
    * Full toString each field
