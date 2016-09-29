@@ -73,7 +73,7 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
    * Will add employee, read all employees back and display last one
    */
   private void actionAdd() {
-    Pair<Boolean, String> status = dao.addEmployee();
+    Pair<Boolean, String> status = dao.addEmployeeRandom();
     
     JOptionPane.showMessageDialog(frame, status.getSecond());
     

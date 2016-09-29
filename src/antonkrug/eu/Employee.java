@@ -39,7 +39,7 @@ public class Employee {
 	 * @param sex
 	 * @param dob
 	 */
-  public Employee(Integer ssn, String name, String address, Integer salary, String sex,
+  public Employee(int ssn, String name, String address, Integer salary, String sex,
       Date dob) {
 
     this.ssn     = ssn;
@@ -165,7 +165,7 @@ public class Employee {
    * These are generic getters and setters for the fields
    * @return
    */
-  public Integer getSalary() {
+  public int getSalary() {
     return salary;
   }
 

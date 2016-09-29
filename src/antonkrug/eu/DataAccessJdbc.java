@@ -190,10 +190,8 @@ public class DataAccessJdbc implements DataAccess {
    * @param employee
    * @return
    */
-  private Pair<Boolean,String> saveEmployee(Employee employee) {
-    System.out.println(employee.toString());
-    
-  //convert util.Date to sql.Date
+  private Pair<Boolean,String> saveEmployee(Employee employee) {    
+    //convert util.Date to sql.Date
     java.sql.Date sqlDate = new java.sql.Date(employee.getDobDate().getTime()); 
     
     PreparedStatement s;
@@ -233,9 +231,17 @@ public class DataAccessJdbc implements DataAccess {
    * Add one randomised employee to database
    */
   @Override
-  public Pair<Boolean,String> addEmployee() {
-    
+  public Pair<Boolean,String> addEmployeeRandom() {
     return saveEmployee(Employee.getRandomizedEmployee());
+  }
+  
+  
+  /**
+   * Adds employee from given argument
+   */
+  @Override
+  public Pair<Boolean,String> addEmployee(Employee employee) {
+    return saveEmployee(employee);
   }
 
 
@@ -292,7 +298,7 @@ public class DataAccessJdbc implements DataAccess {
    * Return size of the result set, if there is any problem return 0
    */
   @Override
-  public Integer getSize() {
+  public int getSize() {
     if (rs == null) {
       return 0;
     }
@@ -311,6 +317,28 @@ public class DataAccessJdbc implements DataAccess {
       }
       
     }
+  }
+
+
+  /**
+   * Can run custom queries, but it's not as efficient as pre-compiled queries
+   */
+  @Override
+  public Pair<Boolean, String> executeQuery(String query) {
+    
+    try {
+      Statement s = con.createStatement();
+      s.execute(query); 
+      s.close ();
+      
+      return new Pair<Boolean, String>(true, Messages.getString("SQL_OK"));
+     }
+     catch (SQLException e) {
+      final String msg = Messages.getString("ERROR_SQL") + e.getErrorCode() + " "+ e.getMessage ();
+      
+      if (DEBUG) System.err.println(msg);
+      return new Pair<Boolean, String>(false, msg);
+     }    
   }
 
   
