@@ -141,9 +141,17 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
    */
   private void connectToDb() {
     dao = new DataAccessJdbc();
-    dao.connect();
-    dao.getEmployees();
+    Pair<Boolean,String> ret = dao.connect();
     
+    if (!ret.getFirst()) {
+      System.err.println(ret.getSecond());
+      JOptionPane.showMessageDialog(frame, ret.getSecond());
+      
+      System.exit(1);
+    }
+    
+    dao.getEmployees();
+   
     //get the first record displayed in the UI
     populateEmployeeFields();
   }
