@@ -181,13 +181,8 @@ public class JdbcViewerGui extends JFrame implements ActionListener {
     int count = dao.getSize();
     countLabel.setText(dao.getCurrentPossition() +" of "+ count);
     
-    //if no employes then disable the Next / Prev buttons
-    if (count > 0) {
-      buttonsEnable();
-    }
-    else {
-      buttonsDisable();
-    }
+    //if no employes then disable the Next / Prev buttons and enable them back when there are Employees
+    buttonsAreEnabled( (count > 0) ? true : false );
   }
   
 
