@@ -3,7 +3,7 @@ JDBC Employee Database Viewer - CA 1
  by Anton Krug 20062210
 
 
-![screenshot](https://raw.githubusercontent.com/truhlikfredy/assignments-y4-jdbcViewer/master/images/app.jpg?token=ABC5iVnzhQtKyOekSlVzQUpt-I9ftVo7ks5X9nw6wA%3D%3D)
+![screenshot](/images/app.jpg)
 
 Features
 --------
@@ -22,7 +22,7 @@ Features
 * Separation of concerns and Modularity, using Interface to separate the database access implementations from concept. AddEmployee in the UI should be independ of the specific implementation of the database. Or given database access implementation shouldn't dependant on specific GUI. All UIs implementation and DAOs depend on 1 interface and 1 class, Employee which is entity containting the values and the DataAccess interface which is used to describle the interface for the implementations. This allows for the UI have many different DAOs implementations and no need to changed anything in the UI. And it's the same other direction as well, the specific DAO can be used in many different UIs. This allows to have console based UI, or just better JUnit tests. And it allows to swap implementations in runtime if needed:
 `DataAccess dao = new DataAccessJdbc();`
 Because the dao is DataAccess we don't care with which specific implementation we initialised it at the moment, in the example it was Jdbc but for the UI there wouldn't any difference if there would be different implementation. In the diagram below it's show how the interface is used:
-![uml diagram of the interface](https://raw.githubusercontent.com/truhlikfredy/assignments-y4-jdbcViewer/master/images/uml.png?token=ABC5if-GPFhyJOJ-UsvbRhHRwsFTlCK3ks5X9l2bwA%3D%3D)
+![uml diagram of the interface](/images/uml.png)
 
     
 * Externalized Strings, all texts which comunicate with enduser are exported into **messagess.properties** allows faster proof reading, or easy multilangual support.
